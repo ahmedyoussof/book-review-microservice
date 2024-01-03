@@ -1,4 +1,4 @@
-package soft.musala.bookinfoservice.model;
+package soft.musala.bookcatalogservice.model;
 
 public class Book {
 
