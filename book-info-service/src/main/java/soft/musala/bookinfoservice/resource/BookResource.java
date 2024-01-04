@@ -15,4 +15,5 @@ public class BookResource {
         System.out.println("BookId : " + bookId);
         return new Book("123", "Head First Object Oriented Analysis and Design");
     }
+
 }
