@@ -1,8 +1,10 @@
 package soft.musala.bookinfoservice.resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import soft.musala.bookinfoservice.model.Book;
 
 
@@ -10,10 +12,14 @@ import soft.musala.bookinfoservice.model.Book;
 @RequestMapping("/books")
 public class BookResource {
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @RequestMapping("/{bookId}")
     public Book getBookInfo(@PathVariable("bookId") String bookId) {
         System.out.println("BookId : " + bookId);
-        return new Book("123", "Head First Object Oriented Analysis and Design");
+        Book book = restTemplate.getForObject("https://gutendex.com/books/" + bookId, Book.class);
+        return book;
     }
 
 }

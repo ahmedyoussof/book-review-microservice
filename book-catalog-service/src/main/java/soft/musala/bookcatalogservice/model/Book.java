@@ -2,30 +2,30 @@ package soft.musala.bookcatalogservice.model;
 
 public class Book {
 
-    private String bookId;
-    private String name;
+    private String id;
+    private String title;
 
     public Book() {
     }
 
-    public Book(String bookId, String name) {
-        this.bookId = bookId;
-        this.name = name;
+    public Book(String id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
-    public String getBookId() {
-        return bookId;
+    public String getId() {
+        return id;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
