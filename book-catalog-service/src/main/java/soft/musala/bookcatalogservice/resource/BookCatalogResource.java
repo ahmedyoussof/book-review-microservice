@@ -8,10 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import soft.musala.bookcatalogservice.model.Book;
 import soft.musala.bookcatalogservice.model.CatalogItem;
-import soft.musala.bookcatalogservice.model.Rating;
 import soft.musala.bookcatalogservice.model.UserRating;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,16 +29,16 @@ public class BookCatalogResource {
         System.out.println("UserId: " + userId);
 
 
-        UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+        UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId, UserRating.class);
         return ratings.getUserRatings().stream().map(rating -> {
-                    Book book = restTemplate.getForObject("http://localhost:8082/books/" + rating.getBookId(), Book.class);
+                    Book book = restTemplate.getForObject("http://book-info-service/books/" + rating.getBookId(), Book.class);
                     /* Book book =  webClient.build()
                             .get()
                             .uri("http://localhost:8082/books/" + rating.getBookId())
                             .retrieve()
                             .bodyToMono(Book.class)
                             .block(); */
-                    return new CatalogItem(book.getName(), "oop a&d", rating.getRating());
+                    return new CatalogItem(book.getTitle(), "test desc", rating.getRating());
                 })
                 .collect(Collectors.toList());
     }
