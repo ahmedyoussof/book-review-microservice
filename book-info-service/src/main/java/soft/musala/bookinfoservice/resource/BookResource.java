@@ -15,6 +15,12 @@ public class BookResource {
     @Autowired
     private RestTemplate restTemplate;
 
+
+    @RequestMapping("/health")
+    public String healthCheck () {
+        return "Book service is up and running!";
+    }
+
     @RequestMapping("/{bookId}")
     public Book getBookInfo(@PathVariable("bookId") String bookId) {
         System.out.println("BookId : " + bookId);

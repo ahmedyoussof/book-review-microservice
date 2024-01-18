@@ -13,6 +13,11 @@ import java.util.List;
 @RequestMapping("/ratingsdata")
 public class RatingResource {
 
+    @RequestMapping("/health")
+    public String healthCheck () {
+        return "Rating service is up and running!";
+    }
+
     @RequestMapping("/{bookId}")
     public Rating getRating(@PathVariable("bookId") String bookId) {
         return new Rating(bookId, 4);
