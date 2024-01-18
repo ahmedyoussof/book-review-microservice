@@ -1,6 +1,7 @@
 package soft.musala.bookcatalogservice.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,9 +32,12 @@ public class BookCatalogResource {
     @Autowired
     private UserRatingService userRatingService;
 
+    @Autowired
+    private Environment environment;
+
     @RequestMapping("/health")
     public String healthCheck () {
-        return "Catalog service is up and running!";
+        return "Catalog service is up and running on port: " + environment.getProperty("local.server.port");
     }
 
     @RequestMapping("/{userId}")

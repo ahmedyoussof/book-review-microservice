@@ -1,5 +1,7 @@
 package soft.musala.ratingdataservice.resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +15,12 @@ import java.util.List;
 @RequestMapping("/ratings")
 public class RatingResource {
 
+    @Autowired
+    private Environment environment;
+
     @RequestMapping("/health")
     public String healthCheck () {
-        return "Rating service is up and running!";
+        return "Rating data service is up and running on port: " + environment.getProperty("local.server.port");
     }
 
     @RequestMapping("/{bookId}")
