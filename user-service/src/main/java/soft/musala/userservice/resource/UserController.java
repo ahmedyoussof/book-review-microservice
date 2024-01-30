@@ -25,7 +25,8 @@ public class UserController {
 
     @RequestMapping("/health")
     public String healthCheck () {
-        return "Book info service is up and running on port: " + environment.getProperty("local.server.port");
+        return "User service is up and running on port: " + environment.getProperty("local.server.port") + "\n" + "Token secret value is: "+ environment.getProperty("token.secret");
+
     }
 
     @PostMapping
