@@ -50,6 +50,8 @@ public class WebSecurity {
                                 .permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/health")
                                 .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/actuator/**")
+                                .permitAll()
                                 .requestMatchers(toH2Console())
                                 .permitAll()
                                 .anyRequest()
