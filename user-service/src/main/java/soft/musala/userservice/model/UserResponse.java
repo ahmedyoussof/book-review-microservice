@@ -1,6 +1,8 @@
 package soft.musala.userservice.model;
 
-public class CreateUserResponse {
+import java.util.List;
+
+public class UserResponse {
 
     private String userId;
 
@@ -8,8 +10,10 @@ public class CreateUserResponse {
 
     private String lastName;
 
-
     private String email;
+
+
+    private List<CatalogItem> catalogItemList;
 
     public String getUserId() {
         return userId;
@@ -41,5 +45,13 @@ public class CreateUserResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<CatalogItem> getCatalogItemList() {
+        return catalogItemList;
+    }
+
+    public void setCatalogItemList(List<CatalogItem> catalogItemList) {
+        this.catalogItemList = catalogItemList;
     }
 }

@@ -48,7 +48,7 @@ public class WebSecurity {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(HttpMethod.POST, "/users")
                                 .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/health")
+                                .requestMatchers(HttpMethod.GET, "/users/**")
                                 .permitAll()
                                 .requestMatchers(HttpMethod.GET, "/actuator/**")
                                 .permitAll()

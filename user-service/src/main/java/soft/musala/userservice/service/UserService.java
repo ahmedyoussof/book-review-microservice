@@ -8,12 +8,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import soft.musala.userservice.model.CreateUserResponse;
+import soft.musala.userservice.model.CatalogItem;
+import soft.musala.userservice.model.UserResponse;
 import soft.musala.userservice.model.CreateUserRequest;
 import soft.musala.userservice.model.UserEntity;
 import soft.musala.userservice.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,11 +27,14 @@ public class UserService implements UserDetailsService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {this.userRepository = userRepository;
+    private final BookCatalogServiceClient bookCatalogServiceClient;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, BookCatalogServiceClient bookCatalogServiceClient) {this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.bookCatalogServiceClient = bookCatalogServiceClient;
     }
 
-    public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
+    public UserResponse createUser(CreateUserRequest createUserRequest) {
 
         createUserRequest.setUserId(UUID.randomUUID().toString());
 
@@ -41,7 +46,7 @@ public class UserService implements UserDetailsService {
 
 
 
-        return modelMapper.map(userEntity, CreateUserResponse.class);
+        return modelMapper.map(userEntity, UserResponse.class);
     }
 
     @Override
@@ -60,5 +65,20 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return userEntity.get().getUserId();
+    }
+
+    public UserResponse getUserById(String id) {
+        Optional<UserEntity> userOptional = userRepository.findUserByUserId(id);
+        if(userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("User not found for id: " + id);
+        }
+        List<CatalogItem> bookCatalogs = bookCatalogServiceClient.getBookCatalogs(userOptional.get().getUserId());
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        UserResponse userResponse = modelMapper.map(userOptional.get(), UserResponse.class);
+        userResponse.setCatalogItemList(bookCatalogs);
+        return userResponse;
     }
 }

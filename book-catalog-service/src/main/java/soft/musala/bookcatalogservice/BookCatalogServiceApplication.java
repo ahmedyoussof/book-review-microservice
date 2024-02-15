@@ -2,6 +2,7 @@ package soft.musala.bookcatalogservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +19,8 @@ public class BookCatalogServiceApplication {
 
 	@Bean
 	@LoadBalanced
-	public RestTemplate getRestTemplate() {
-		return new RestTemplate();
+	public RestTemplate getRestTemplate(RestTemplateBuilder builder) {
+		return builder.build();
 	}
 
 	@Bean

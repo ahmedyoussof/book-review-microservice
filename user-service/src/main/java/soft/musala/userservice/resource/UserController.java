@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import soft.musala.userservice.model.CreateUserResponse;
+import org.springframework.web.bind.annotation.*;
+import soft.musala.userservice.model.UserResponse;
 import soft.musala.userservice.model.CreateUserRequest;
 import soft.musala.userservice.service.UserService;
 
@@ -30,8 +27,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateUserResponse> createUser (@Valid @RequestBody CreateUserRequest createUserRequest) {
-        CreateUserResponse createdUser = userService.createUser(createUserRequest);
+    public ResponseEntity<UserResponse> createUser (@Valid @RequestBody CreateUserRequest createUserRequest) {
+        UserResponse createdUser = userService.createUser(createUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @RequestMapping("/{id}")
+    public ResponseEntity<UserResponse> getUser (@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id));
+
     }
 }
