@@ -40,6 +40,7 @@ public class WebSecurity {
 
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, userService, environment);
         authenticationFilter.setFilterProcessesUrl("/users/login");
+
         http
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(toH2Console())
