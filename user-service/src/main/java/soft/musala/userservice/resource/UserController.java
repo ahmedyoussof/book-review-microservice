@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/health")
+    @GetMapping("/health")
     public String healthCheck () {
         return "User service is up and running on port: " + environment.getProperty("local.server.port") + "\n" + "Token secret value is: "+ environment.getProperty("token.secret");
 
@@ -32,7 +32,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser (@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id));
 

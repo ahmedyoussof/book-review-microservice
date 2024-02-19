@@ -52,6 +52,7 @@ public class WebSecurity {
                                 .requestMatchers(HttpMethod.GET, "/users/**")
                                 .permitAll()
                                 .requestMatchers(HttpMethod.GET, "/actuator/**")
+                                .permitAll().requestMatchers(HttpMethod.GET, "swagger-ui/**", "/v3/api-docs/**")
                                 .permitAll()
                                 .requestMatchers(toH2Console())
                                 .permitAll()
