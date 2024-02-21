@@ -1,0 +1,40 @@
+version: '3'
+services:
+  configuration-server:
+    image: configuration-server:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - my-network
+
+  discovery-service:
+    image: discovery-service:latest
+    ports:
+      - "8761:8761"
+    depends_on:
+      - configuration-server
+    networks:
+      - my-network
+
+  api-gateway:
+    image: api-gateway:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - configuration-server
+      - discovery-service
+    networks:
+      - my-network
+
+  user-service:
+    image: user-service:latest
+    ports:
+      - "8082:8082"
+    depends_on:
+      - configuration-server
+      - discovery-service
+    networks:
+      - my-network
+
+networks:
+  my-network:
