@@ -1,38 +1,107 @@
 version: '3'
 services:
   configuration-server:
-    image: configuration-server:latest
+    container_name: configuration-server
+    build:
+      context: ./configuration-server
+      dockerfile: ./Dockerfile
     ports:
       - "8081:8081"
+    env_file:
+      - docker-compose.properties
     networks:
       - my-network
 
   discovery-service:
-    image: discovery-service:latest
+    container_name: discovery-service
+    build:
+      context: ./discovery-service
+      dockerfile: ./Dockerfile
     ports:
       - "8761:8761"
+    env_file:
+      - docker-compose.properties
     depends_on:
       - configuration-server
-    networks:
-      - my-network
-
-  api-gateway:
-    image: api-gateway:latest
-    ports:
-      - "8080:8080"
-    depends_on:
-      - configuration-server
-      - discovery-service
     networks:
       - my-network
 
   user-service:
-    image: user-service:latest
+    container_name: user-service
+    build:
+      context: ./user-service
+      dockerfile: ./Dockerfile
     ports:
       - "8082:8082"
+    env_file:
+        - docker-compose.properties
     depends_on:
       - configuration-server
       - discovery-service
+    networks:
+      - my-network
+
+  book-catalog-service:
+    container_name: book-catalog-service
+    build:
+      context: ./book-catalog-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8083:8083"
+    env_file:
+      - docker-compose.properties
+    depends_on:
+      - configuration-server
+      - discovery-service
+    networks:
+      - my-network
+
+  book-info-service:
+    container_name: book-info-service
+    build:
+      context: ./book-info-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8084:8084"
+    env_file:
+      - docker-compose.properties
+    depends_on:
+      - configuration-server
+      - discovery-service
+    networks:
+      - my-network
+
+  rating-data-service:
+    container_name: rating-data-service
+    build:
+      context: ./rating-data-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "8085:8085"
+    env_file:
+      - docker-compose.properties
+    depends_on:
+      - configuration-server
+      - discovery-service
+    networks:
+      - my-network
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+        - docker-compose.properties
+    depends_on:
+      - configuration-server
+      - discovery-service
+      - user-service
+      - book-catalog-service
+      - book-info-service
+      - rating-data-service
     networks:
       - my-network
 
