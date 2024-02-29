@@ -53,6 +53,9 @@ with the following order:
 After the project is started you can access the API documentation at  
 http://localhost:8082/swagger-ui/index.html
 
+A postman collection is provided in the project to test the API.  
+[Microservice-demo.postman_collection.json](Microservice-demo.postman_collection.json)
+
 # Endpoints
 The API is a REST API that provides the following endpoints:
 
