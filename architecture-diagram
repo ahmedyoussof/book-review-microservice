@@ -25,16 +25,16 @@ cloud {
     [External Book Service]
 }
 
-web -u-> [API Gateway] : HTTP request
+web -d-> [API Gateway] : HTTP request
 [API Gateway] -l-> [Discovery Service] : 1-lookup service(users)
 [Discovery Service] -d-> [User Service] : 2-rout to service(users)
 [User Service] -u-> [Discovery Service] : 3-lookup service(book-catalog)
 [Discovery Service] -d-> [Book Catalog Service] : 4-rout to service(book-catalog)
 [Book Catalog Service] -u-> [Discovery Service] : 5-lookup service(book-info)
-[Discovery Service] -d-> [Book Catalog Service] : 6-rout to service(book-info)
-[Book Info Service] -u-> [External Book Service] : get book info from external service
-[Book Info Service] -u-> [Discovery Service] : 7-lookup service(book-rating)
-[Discovery Service] -d-> [Book Rating Service] : 8-rout to service(book-rating)
+[Discovery Service] --> [Book Info Service] : 6-rout to service(book-info)
+[Book Info Service] --> [External Book Service] : 7-get book info from external service
+[Book Info Service] -u-> [Discovery Service] : 8-lookup service(book-rating)
+[Discovery Service] -d-> [Book Rating Service] : 9-rout to service(book-rating)
 
 
 @enduml
