@@ -2,91 +2,99 @@
 
 
 
-## Getting started
+# What is this repository
+This repo is a  REST API to manage a  users and books, in order to practice microservices
+development and deployment using spring cloud and docker.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+# Architecture
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+![architecture-diagram.png](architecture-diagram.png)
 
-## Add your files
+The project is divided into 7 microservices:
+- user-service: Provides the user management API
+- discovery-service: Eureka server to register and discover microservices
+- gateway-service: API gateway to route requests to the correct microservice
+- configuration-service: Configuration server to provide configuration to the microservices
+- book-catalog-service: Provides the book catalog for users
+- book-info-service: Provides the book information that is integrated with external book service [gutendex.com](https://gutendex.com/)
+- book-rating-service: Provides the book ratings for a user
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+# Technologies used
+- Java 17
+- Spring Boot
+- Spring Cloud
+    - Eureka
+    - Gateway
+    - Config
+    - circuit breaker
+    - openfeign
+    - bus
+- Spring Cloud
+- Spring Cloud Eureka
+- Spring Cloud Gateway
+- Docker
+- Docker Compose
+- H2 Database
+- Swagger
+- RabbitMQ
 
+
+
+
+# How to run the project
+To run the project you need to have docker and docker-compose installed in your machine.   
+Then you can run the following to start the project.
 ```
-cd existing_repo
-git remote add origin https://gitlab.musala.com/ahmed.zakieldin/microservice-demo-project.git
-git branch -M main
-git push -uf origin main
-```
+docker-compose up
+``` 
+Also, you can run the project using you IDE, just run the main class of each microservice.
+with the following order:
+1. configuration-server
+2. discovery-server
+3. all other microservices
+4. api-gateway
 
-## Integrate with your tools
+After the project is started you can access the API documentation at  
+http://localhost:8082/swagger-ui/index.html
 
-- [ ] [Set up project integrations](https://gitlab.musala.com/ahmed.zakieldin/microservice-demo-project/-/settings/integrations)
+# Endpoints
+The API is a REST API that provides the following endpoints:
 
-## Collaborate with your team
+- POST /users: Create a new user
+- POST/users/login: Login a user
+- GET /users/{id}: Get a user by id
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+# Configuration
+- The project uses a configuration server to provide configuration to the microservices.
+- The configuration is stored in local file and the configuration server reads the configuration from there.
+- RabbitMQ is used to notify the microservices when the configuration is updated, so they can refresh their configuration.
+  without the need to restart the microservices.
 
-## Test and Deploy
+# Load Balancing
+- The project uses the gateway to route the requests to the correct microservice.
+- The gateway uses the Eureka server to discover the microservices.
 
-Use the built-in continuous integration in GitLab.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+# Circuit Breaker
+- The project uses the circuit breaker pattern to prevent the system from failing when a service is down.
+- The project uses the resilience4j library to implement the circuit breaker pattern.
 
-***
+# Security
+- The project uses JWT to secure the API. To access the API you need to create a user using the /users endpoint and then login using the /users/login endpoint.
+- The login endpoint will return a JWT token that you need to use to access the other endpoints.
 
-# Editing this README
+# Monitoring
+- The project uses actuator to provide monitoring endpoints.
+- The project uses zipkin to trace the requests between the microservices.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
-## Name
-Choose a self-explaining name for your project.
+# Future improvements
+- Add routing for swagger documentation url in the gateway.
+- RabbitMQ is started using docker-compose.
+- Zipkin is started using docker-compose.
+- Elk stack can be added to the project to provide log monitoring.
+- The project uses H2 database to store the data, but it can be easily changed to use a real database like MySQL or PostgreSQL.
+- The project uses a local file to store the configuration, but it can be easily changed to use a git repository to store the configuration.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
