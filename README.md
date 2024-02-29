@@ -1,7 +1,3 @@
-# microservice-demo-project
-
-
-
 # What is this repository
 This repo is a  REST API to manage a  users and books, in order to practice microservices
 development and deployment using spring cloud and docker.
